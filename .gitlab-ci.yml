@@ -1,6 +1,5 @@
 stages:
   - test
-  - deploy
 
 variables:
   DOTNET_CLI_TELEMETRY_OPTOUT: "1"
@@ -15,27 +14,14 @@ api-tests:
     - echo "Running Booking API Tests..."
     - dotnet build --no-restore
     - dotnet test --logger "console;verbosity=normal" --no-build
-    - echo "Tests completed!"
+    - echo "Moving reports to root directory..."
+    - if (Test-Path "bin/Debug/net6.0/TestReports") { Copy-Item -Path "bin/Debug/net6.0/TestReports/*" -Destination "." -Recurse -Force }
+    - echo "Reports available in root folder"
   artifacts:
     when: always
     paths:
-      - bin/Debug/net6.0/TestReports/
+      - "*.html"
     expire_in: 1 week
-  only:
-    - main
-  tags:
-    - bookingapi
-
-pages:
-  stage: deploy
-  script:
-    - echo "Publishing ExtentReport to GitLab Pages..."
-    - mkdir public
-    - cp bin/Debug/net6.0/TestReports/*.html public/
-    - echo "Report published to GitLab Pages!"
-  artifacts:
-    paths:
-      - public
   only:
     - main
   tags:

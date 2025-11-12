@@ -13,7 +13,9 @@ api-tests:
   script:
     - echo "Running Booking API Tests..."
     - dotnet build --no-restore
-    - dotnet test --logger "console;verbosity=normal" --no-build
+    - dotnet test --logger "console;verbosity=normal" --no-build --verbosity normal
+    - echo "Test execution completed"
+  after_script:
     - echo "Moving reports to root directory..."
     - if (Test-Path "bin/Debug/net6.0/TestReports") { Copy-Item -Path "bin/Debug/net6.0/TestReports/*" -Destination "." -Recurse -Force }
     - echo "Reports available in root folder"
@@ -21,6 +23,7 @@ api-tests:
     when: always
     paths:
       - "*.html"
+      - "bin/Debug/net6.0/TestReports/"
     expire_in: 1 week
   only:
     - main

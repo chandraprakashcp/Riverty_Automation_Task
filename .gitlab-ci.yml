@@ -23,4 +23,4 @@ api-tests:
   only:
     - main
   tags:
-    - bookingapi
+    - api

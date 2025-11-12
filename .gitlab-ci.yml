@@ -1,0 +1,112 @@
+﻿stages:
+  - test
+  - report
+
+variables:
+  NUGET_CONFIG: "$CI_PROJECT_DIR/.nuget/NuGet"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  DOTNET_VERSION: "6.0"
+
+before_script:
+  - dotnet restore
+
+api-tests:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:6.0
+  script:
+    - dotnet build --configuration Release --no-restore
+    - dotnet test --configuration Release --logger:trx --logger:html --results-directory:./test-results --no-build
+    - echo "ExtentReports will be generated in TestReports/ directory"
+  artifacts:
+    when: always
+    paths:
+      - test-results/
+      - TestReports/
+    reports:
+      junit: test-results/*.trx
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+    - merge_requests
+  tags:
+    - docker
+
+extent-reports:
+  stage: report
+  image: alpine:latest
+  dependencies:
+    - api-tests
+  before_script:
+    - apk add --no-cache curl
+  script:
+    - |
+      echo "=== Test Execution Completed ==="
+      echo "📊 Available Reports:"
+      echo "1. JUnit/TRX Reports: test-results/"
+      echo "2. Extent HTML Reports: TestReports/"
+      echo "3. Console logs available in pipeline output"
+      
+      # Check if ExtentReports were generated
+      if [ -d "TestReports" ]; then
+        echo "✅ ExtentReports found:"
+        find TestReports/ -name "*.html" -type f | while read report; do
+          echo "   - $report"
+        done
+      else
+        echo "⚠️  No ExtentReports directory found"
+      fi
+      
+      # Check if test results exist
+      if [ -d "test-results" ]; then
+        echo "✅ TRX/HTML test results found"
+        find test-results/ -name "*.trx" -o -name "*.html" | while read result; do
+          echo "   - $result"
+        done
+      fi
+  artifacts:
+    when: always
+    paths:
+      - test-results/
+      - TestReports/
+    expire_in: 2 weeks
+  only:
+    - main
+    - develop
+    - merge_requests
+  tags:
+    - docker
+
+pipeline-summary:
+  stage: report
+  image: alpine:latest
+  dependencies:
+    - api-tests
+  script:
+    - |
+      echo "=== Pipeline Test Summary ==="
+      echo "Project: $CI_PROJECT_TITLE"
+      echo "Pipeline: $CI_PIPELINE_URL"
+      echo "Branch: $CI_COMMIT_REF_NAME"
+      echo "Commit: $CI_COMMIT_SHORT_SHA"
+      
+      # Summary message
+      echo ""
+      echo "📋 Report Access Instructions:"
+      echo "1. Download artifacts from this pipeline"
+      echo "2. Open TestReports/*.html for detailed ExtentReports"
+      echo "3. Open test-results/*.html for Visual Studio test results"
+      echo "4. View JUnit reports in GitLab CI/CD test coverage tab"
+      
+      echo ""
+      echo "🚀 Next steps:"
+      echo "- Review test failures in ExtentReports"
+      echo "- Check test coverage metrics"
+      echo "- Download artifacts for detailed analysis"
+  when: always
+  only:
+    - main
+    - develop
+    - merge_requests
+  tags:
+    - docker

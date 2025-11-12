@@ -1,0 +1,28 @@
+﻿# Build outputs
+bin/
+obj/
+TestResults/
+
+# IDE files
+.vs/
+.vscode/
+*.user
+*.suo
+
+# NuGet packages
+packages/
+*.nupkg
+
+# Test results
+*.trx
+*.html
+
+# User-specific files
+*.csproj.user
+
+# SpecFlow
+SpecFlowOutput.html
+
+# ExtentReports (optional - if you don't want to commit reports)
+*.html
+!*.feature

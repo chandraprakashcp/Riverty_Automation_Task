@@ -22,7 +22,5 @@ api-tests:
     expire_in: 1 week
   only:
     - main
-    - develop
-    - merge_requests
   tags:
-    - shell
+    - bookingapi

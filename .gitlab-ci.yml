@@ -11,14 +11,14 @@ before_script:
 api-tests:
   stage: test
   script:
-    - echo "Running Booking API Tests"
+    - echo "Running Booking API Tests on Windows Runner..."
     - dotnet build --no-restore
     - dotnet test --logger "console;verbosity=normal" --no-build
-    - echo "Tests completed"
+    - echo "Tests completed! ExtentReports should be in bin/Debug/net6.0/TestReports/"
   artifacts:
     when: always
     paths:
-      - TestReports/
+      - bin/Debug/net6.0/TestReports/
     expire_in: 1 week
   only:
     - main

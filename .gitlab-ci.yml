@@ -14,11 +14,16 @@ api-tests:
     - echo "Running Booking API Tests on Windows Runner..."
     - dotnet build --no-restore
     - dotnet test --logger "console;verbosity=normal" --no-build
-    - echo "Tests completed! Check ExtentReports in TestReports folder"
+    - echo "Tests completed! Searching for ExtentReports..."
+    - dir /s *.html || echo "No HTML reports found"
+    - dir /s TestReports || echo "No TestReports directory found"
+    - dir /s bin || echo "Checking bin directory"
   artifacts:
     when: always
     paths:
+      - bin/**/*.html
       - TestReports/
+      - *.html
     expire_in: 1 week
   only:
     - main

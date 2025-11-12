@@ -15,9 +15,9 @@ api-tests:
     - dotnet build --no-restore
     - dotnet test --logger "console;verbosity=normal" --no-build
     - echo "Tests completed! Searching for ExtentReports..."
-    - dir /s *.html || echo "No HTML reports found"
-    - dir /s TestReports || echo "No TestReports directory found"
-    - dir /s bin || echo "Checking bin directory"
+    - dir /s *.html
+    - dir /s TestReports
+    - dir /s bin
   artifacts:
     when: always
     paths:

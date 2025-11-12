@@ -1,5 +1,6 @@
 stages:
   - test
+  - deploy
 
 variables:
   DOTNET_CLI_TELEMETRY_OPTOUT: "1"
@@ -11,15 +12,30 @@ before_script:
 api-tests:
   stage: test
   script:
-    - echo "Running Booking API Tests on Windows Runner..."
+    - echo "Running Booking API Tests..."
     - dotnet build --no-restore
     - dotnet test --logger "console;verbosity=normal" --no-build
-    - echo "Tests completed! ExtentReports should be in bin/Debug/net6.0/TestReports/"
+    - echo "Tests completed!"
   artifacts:
     when: always
     paths:
       - bin/Debug/net6.0/TestReports/
     expire_in: 1 week
+  only:
+    - main
+  tags:
+    - bookingapi
+
+pages:
+  stage: deploy
+  script:
+    - echo "Publishing ExtentReport to GitLab Pages..."
+    - mkdir public
+    - cp bin/Debug/net6.0/TestReports/*.html public/
+    - echo "Report published to GitLab Pages!"
+  artifacts:
+    paths:
+      - public
   only:
     - main
   tags:

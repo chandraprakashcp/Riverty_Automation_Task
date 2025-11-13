@@ -91,6 +91,7 @@ namespace SpecFlowBookingAPI.StepDefinitions
             _response = _apiClient.GetRequest(endpoint);
         }
 
+       
         [When(@"I send a POST request to the ""(.*)"" endpoint with the following booking data:")]
         public void WhenISendAPOSTRequestToTheEndpointWithTheFollowingBookingData(string endpoint, Table table)
         {

@@ -9,6 +9,7 @@ namespace SpecFlowBookingAPI.Hooks
         private readonly ScenarioContext _scenarioContext;
         private readonly FeatureContext _featureContext;
         private static int _scenarioCount = 0;
+        private static readonly object _lockObject = new object();
 
         public Hooks(ScenarioContext scenarioContext, FeatureContext featureContext)
         {
@@ -26,8 +27,14 @@ namespace SpecFlowBookingAPI.Hooks
         [BeforeScenario]
         public void BeforeScenario()
         {
-            _scenarioCount++;
-            Console.WriteLine($"\n📝 Scenario #{_scenarioCount}: {_scenarioContext.ScenarioInfo.Title}");
+            int currentCount;
+            lock (_lockObject)
+            {
+                _scenarioCount++;
+                currentCount = _scenarioCount;
+            }
+
+            Console.WriteLine($"\n📝 Scenario #{currentCount}: {_scenarioContext.ScenarioInfo.Title}");
             ExtentReportHelper.CreateTest(_featureContext, _scenarioContext);
         }
 
@@ -42,13 +49,22 @@ namespace SpecFlowBookingAPI.Hooks
         {
             var status = _scenarioContext.TestError == null ? "PASSED" : "FAILED";
             Console.WriteLine($"📊 Scenario Result: {status}");
-            Console.WriteLine($"📈 Completed: {_scenarioCount} scenarios");
+
+            lock (_lockObject)
+            {
+                Console.WriteLine($"📈 Completed: {_scenarioCount} scenarios");
+            }
         }
+
 
         [AfterTestRun]
         public static void AfterTestRun()
         {
-            Console.WriteLine($"🏁 Test Run Completed. Total Scenarios: {_scenarioCount}");
+            lock (_lockObject)
+            {
+                Console.WriteLine($"🏁 Test Run Completed. Total Scenarios: {_scenarioCount}");
+            }
+
             ExtentReportHelper.FlushReport();
             Console.WriteLine("✅ Report generation process finished!");
         }

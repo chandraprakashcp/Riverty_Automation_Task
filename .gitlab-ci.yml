@@ -4,28 +4,22 @@ stages:
 variables:
   DOTNET_CLI_TELEMETRY_OPTOUT: "1"
 
-docker-api-tests:
+windows-api-tests:
   stage: test
-  image: docker:24.0
-  services:
-    - docker:24.0-dind
-  variables:
-    DOCKER_TLS_CERTDIR: "/certs"
   script:
     - echo "Building Docker image for API tests..."
     - docker build -t booking-api-tests .
     - echo "Running tests in Docker container..."
     - mkdir -p test-reports
-    # EXACT SAME CONTAINER PATH AS YOUR WORKING CODE
-    - docker run --rm -v "$(pwd)/test-reports:/app/bin/Release/net6.0/TestReports" booking-api-tests
+    - docker run --rm -v "${PWD}/test-reports:/app/bin/Release/net6.0/TestReports" booking-api-tests
     - echo "Test execution completed"
   after_script:
     - echo "Checking test reports..."
-    - ls -la test-reports/ 2>/dev/null || echo "No test reports found"
+    - powershell "if (Test-Path 'test-reports') { Get-ChildItem 'test-reports' } else { Write-Host 'No test reports found' }"
   artifacts:
     when: always
     paths:
       - test-reports/
     expire_in: 1 week
   tags:
-    - api
+    - windows

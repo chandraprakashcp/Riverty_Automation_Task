@@ -22,7 +22,7 @@ namespace SpecFlowBookingAPI.StepDefinitions
         [Given(@"I set the base API URL to the restful-booker service")]
         public void GivenISetTheBaseAPIURLToTheRestfulBookerService()
         {
-            // Base URL is set in the API client constructor
+            // Base URL configuration is handled in BookingApiClient constructor
         }
 
         [Given(@"I create a new booking with firstname ""(.*)"" and lastname ""(.*)""")]
@@ -74,7 +74,6 @@ namespace SpecFlowBookingAPI.StepDefinitions
         [Given(@"I store the booking ID as ""(.*)""")]
         public void GivenIStoreTheBookingIDAs(string key)
         {
-            // Booking ID is already stored, this step just documents the storage
             var bookingId = _scenarioContext["currentBookingId"];
             _scenarioContext[key] = bookingId;
         }
@@ -82,7 +81,6 @@ namespace SpecFlowBookingAPI.StepDefinitions
         [When(@"I send a GET request to the ""(.*)"" endpoint")]
         public void WhenISendAGETRequestToTheEndpoint(string endpoint)
         {
-            // Replace <bookingid> with actual ID from context if it exists
             if (endpoint.Contains("<bookingid>") && _scenarioContext.ContainsKey("currentBookingId"))
             {
                 var bookingId = _scenarioContext["currentBookingId"].ToString();
@@ -91,7 +89,6 @@ namespace SpecFlowBookingAPI.StepDefinitions
             _response = _apiClient.GetRequest(endpoint);
         }
 
-       
         [When(@"I send a POST request to the ""(.*)"" endpoint with the following booking data:")]
         public void WhenISendAPOSTRequestToTheEndpointWithTheFollowingBookingData(string endpoint, Table table)
         {
@@ -169,7 +166,7 @@ namespace SpecFlowBookingAPI.StepDefinitions
         {
             var authResponse = _apiClient.GetAuthToken();
 
-            if (authResponse.StatusCode == System.Net.HttpStatusCode.OK)
+            if (authResponse.StatusCode == HttpStatusCode.OK)
             {
                 var authData = JsonConvert.DeserializeObject<AuthResponse>(authResponse.Content);
                 _scenarioContext["authToken"] = authData.token;
@@ -236,15 +233,6 @@ namespace SpecFlowBookingAPI.StepDefinitions
         {
             var updatedBooking = JsonConvert.DeserializeObject<Booking>(_response.Content);
             updatedBooking.Should().NotBeNull();
-        }
-
-        [Then(@"the response should contain booking details for ID (\d+)")]
-        public void ThenTheResponseShouldContainBookingDetailsForID(int bookingId)
-        {
-            var booking = JsonConvert.DeserializeObject<Booking>(_response.Content);
-            booking.Should().NotBeNull();
-            booking.firstname.Should().NotBeNullOrEmpty();
-            booking.lastname.Should().NotBeNullOrEmpty();
         }
     }
 }

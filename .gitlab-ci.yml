@@ -28,4 +28,4 @@ docker-api-tests:
       - test-reports/
     expire_in: 1 week
   tags:
-    - docker
+    - api

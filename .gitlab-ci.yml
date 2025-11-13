@@ -4,7 +4,7 @@ stages:
 variables:
   DOTNET_CLI_TELEMETRY_OPTOUT: "1"
 
-# Single job that runs based on TEST_TAG variable
+
 tagged-tests:
   stage: test
   script:
@@ -27,4 +27,4 @@ tagged-tests:
   tags:
     - api
   rules:
-    - if: '$TEST_TAG != null'  # Only run when TEST_TAG variable is set
+    - if: '$TEST_TAG != null'

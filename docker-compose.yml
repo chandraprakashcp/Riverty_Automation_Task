@@ -1,9 +1,0 @@
-﻿version: '3.8'
-
-services:
-  specflow-tests:
-    build: .
-    container_name: booking-api-tests
-    volumes:
-      - ./test-results:/app/test-results
-      - ./allure-results:/app/allure-results

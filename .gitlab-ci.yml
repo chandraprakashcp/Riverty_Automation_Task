@@ -4,18 +4,22 @@ stages:
 variables:
   DOTNET_CLI_TELEMETRY_OPTOUT: "1"
 
-windows-api-tests:
+docker-api-tests:
   stage: test
+  image: docker:latest
+  services:
+    - docker:dind
   script:
     - echo "Building Docker image for API tests..."
     - docker build -t booking-api-tests .
     - echo "Running tests in Docker container..."
     - mkdir -p test-reports
-    - docker run --rm -v "${PWD}/test-reports:/app/bin/Release/net6.0/TestReports" booking-api-tests
+    # FIX: Change from Debug to Release path
+    - docker run --rm -v "/c/GitLab-Runner/builds/T4toTM-DC/0/chandraselenium0910-group/booking-api-automation/test-reports:/app/bin/Release/net6.0/TestReports" booking-api-tests
     - echo "Test execution completed"
   after_script:
     - echo "Checking test reports..."
-    - powershell "if (Test-Path 'test-reports') { Get-ChildItem 'test-reports' } else { Write-Host 'No test reports found' }"
+    - ls -la test-reports/ 2>/dev/null || echo "No test reports found"
   artifacts:
     when: always
     paths:

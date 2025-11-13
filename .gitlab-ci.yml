@@ -22,4 +22,4 @@ windows-api-tests:
       - test-reports/
     expire_in: 1 week
   tags:
-    - windows
+    - api

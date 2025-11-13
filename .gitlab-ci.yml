@@ -25,6 +25,3 @@ tagged-tests:
     expire_in: 1 week
   tags:
     - api
-  only:
-    variables:
-      - $TEST_TAG != null

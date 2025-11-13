@@ -4,7 +4,6 @@ stages:
 variables:
   DOTNET_CLI_TELEMETRY_OPTOUT: "1"
 
-
 tagged-tests:
   stage: test
   script:
@@ -12,7 +11,7 @@ tagged-tests:
     - echo "Building Docker image..."
     - docker build -t booking-api-tests .
     - echo "Creating test reports directory..."
-    - mkdir -p test-reports-${TEST_TAG}
+    - mkdir -p "test-reports-${TEST_TAG}"
     - echo "Executing tests with filter: Category=${TEST_TAG}"
     - docker run --rm -v "${PWD}/test-reports-${TEST_TAG}:/app/bin/Release/net6.0/TestReports" booking-api-tests --filter "Category=${TEST_TAG}"
     - echo "Test execution completed for ${TEST_TAG} tests"
@@ -22,9 +21,10 @@ tagged-tests:
   artifacts:
     when: always
     paths:
-      - test-reports-${TEST_TAG}/
+      - "test-reports-${TEST_TAG}/"
     expire_in: 1 week
   tags:
     - api
-  rules:
-    - if: '$TEST_TAG != null'
+  only:
+    variables:
+      - $TEST_TAG != null

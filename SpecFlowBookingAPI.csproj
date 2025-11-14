@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="TestReports\**" />
+    <EmbeddedResource Remove="TestReports\**" />
+    <None Remove="TestReports\**" />
+    <SpecFlowFeatureFiles Remove="TestReports\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="TestReports\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="SpecFlow" Version="3.9.74" />
     <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.74" />
@@ -27,10 +35,6 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="TestReports\" />
   </ItemGroup>
 
 </Project>

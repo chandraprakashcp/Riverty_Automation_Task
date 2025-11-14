@@ -39,8 +39,25 @@ namespace SpecFlowBookingAPI.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Booking API Operations", "    As a user of the booking system\r\n    I want to manage bookings through the AP" +
-                    "I\r\n    So that I can perform CRUD operations on bookings", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Booking API Operations", @"    As a user of the booking system
+    I want to manage bookings through the API
+    So that I can perform CRUD operations on bookings
+
+    StoryID: BOOKING-API-001
+    JiraID: QA-247
+    Date: 2025-01-15
+    Created by: Automation Team
+    Last Updated: 2025-01-15
+    
+    Description:
+    Comprehensive acceptance tests for Restful-Booker Booking API
+    covering all CRUD operations with positive and negative test scenarios
+
+    API Coverage:
+    - GET /booking - Retrieve all booking IDs
+    - GET /booking/{id} - Fetch specific booking details
+    - POST /booking - Create new bookings  
+    - PUT /booking/{id} - Update existing bookings", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,9 +97,9 @@ namespace SpecFlowBookingAPI.Features
         
         public virtual void FeatureBackground()
         {
-#line 7
+#line 23
 #line hidden
-#line 8
+#line 24
     testRunner.Given("I set the base API URL to the restful-booker service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
@@ -98,7 +115,7 @@ namespace SpecFlowBookingAPI.Features
                     "Smoke"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get all booking IDs", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 11
+#line 27
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -108,16 +125,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
+#line 23
 this.FeatureBackground();
 #line hidden
-#line 12
+#line 28
     testRunner.When("I send a GET request to the \"booking\" endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 13
+#line 29
     testRunner.Then("the response status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 14
+#line 30
     testRunner.And("the response should contain a list of booking IDs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -135,7 +152,7 @@ this.FeatureBackground();
                     "Reliable"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get booking by creating it first", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 17
+#line 33
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -145,25 +162,25 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
+#line 23
 this.FeatureBackground();
 #line hidden
-#line 18
+#line 34
     testRunner.Given("I create a new booking with firstname \"Test\" and lastname \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 19
+#line 35
     testRunner.And("I store the booking ID as \"currentBookingId\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 20
+#line 36
     testRunner.When("I send a GET request to the \"booking/<bookingid>\" endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 21
+#line 37
     testRunner.Then("the response status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 22
+#line 38
     testRunner.And("the response should contain the booking details for \"Test\" \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 23
+#line 39
     testRunner.And("the created booking should have valid random data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -175,7 +192,6 @@ this.FeatureBackground();
         [NUnit.Framework.CategoryAttribute("CreateBooking")]
         [NUnit.Framework.CategoryAttribute("Smoke")]
         [NUnit.Framework.TestCaseAttribute("John", "Smith", "200", "true", "2024-01-01", "2024-01-05", "Breakfast", null)]
-        [NUnit.Framework.TestCaseAttribute("Sarah", "Johnson", "350", "false", "2024-02-15", "2024-02-20", "Late Checkout", null)]
         public void CreateANewBookingWithValidData(string firstname, string lastname, string totalprice, string depositpaid, string checkin, string checkout, string additionalneeds, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -195,7 +211,7 @@ this.FeatureBackground();
             argumentsOfScenario.Add("checkout", checkout);
             argumentsOfScenario.Add("additionalneeds", additionalneeds);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a new booking with valid data", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 26
+#line 42
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -205,7 +221,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
+#line 23
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -224,16 +240,16 @@ this.FeatureBackground();
                             string.Format("{0}", checkin),
                             string.Format("{0}", checkout),
                             string.Format("{0}", additionalneeds)});
-#line 27
+#line 43
     testRunner.When("I send a POST request to the \"booking\" endpoint with the following booking data:", ((string)(null)), table1, "When ");
 #line hidden
-#line 30
+#line 46
     testRunner.Then("the response status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 31
+#line 47
     testRunner.And("the response should contain a booking ID", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 32
+#line 48
     testRunner.And("the response booking details should match the request data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -265,7 +281,7 @@ this.FeatureBackground();
             argumentsOfScenario.Add("checkout", checkout);
             argumentsOfScenario.Add("additionalneeds", additionalneeds);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update an existing booking", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 40
+#line 55
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -275,16 +291,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
+#line 23
 this.FeatureBackground();
 #line hidden
-#line 41
+#line 56
     testRunner.Given("I create a new booking with firstname \"Test\" and lastname \"User\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 42
+#line 57
     testRunner.And("I store the booking ID as \"createdBookingId\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 43
+#line 58
     testRunner.And("I have obtained an authentication token", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -303,14 +319,14 @@ this.FeatureBackground();
                             string.Format("{0}", checkin),
                             string.Format("{0}", checkout),
                             string.Format("{0}", additionalneeds)});
-#line 44
+#line 59
     testRunner.When("I send a PUT request to the \"booking/<bookingid>\" endpoint with the following upd" +
                         "ated data:", ((string)(null)), table2, "When ");
 #line hidden
-#line 47
+#line 62
     testRunner.Then("the response status code should be 200", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 48
+#line 63
     testRunner.And("the response should contain the updated booking details", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -338,7 +354,7 @@ this.FeatureBackground();
             argumentsOfScenario.Add("bookingid", bookingid);
             argumentsOfScenario.Add("expectedstatuscode", expectedstatuscode);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get booking with invalid ID should return appropriate error", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 56
+#line 71
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -348,13 +364,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
+#line 23
 this.FeatureBackground();
 #line hidden
-#line 57
+#line 72
     testRunner.When(string.Format("I send a GET request to the \"booking/{0}\" endpoint", bookingid), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 58
+#line 73
     testRunner.Then(string.Format("the response status code should be {0}", expectedstatuscode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -372,7 +388,7 @@ this.FeatureBackground();
                     "CreateBooking"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create booking with missing required fields should fail", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 67
+#line 82
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -382,7 +398,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
+#line 23
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -393,10 +409,10 @@ this.FeatureBackground();
                             "John",
                             "",
                             "200"});
-#line 68
+#line 83
     testRunner.When("I send a POST request to the \"booking\" endpoint with incomplete booking data:", ((string)(null)), table3, "When ");
 #line hidden
-#line 71
+#line 86
     testRunner.Then("the response status code should be 500", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

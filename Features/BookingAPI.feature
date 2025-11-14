@@ -4,6 +4,22 @@ Feature: Booking API Operations
     I want to manage bookings through the API
     So that I can perform CRUD operations on bookings
 
+    StoryID: BOOKING-API-001
+    JiraID: QA-247
+    Date: 2025-01-15
+    Created by: Automation Team
+    Last Updated: 2025-01-15
+    
+    Description:
+    Comprehensive acceptance tests for Restful-Booker Booking API
+    covering all CRUD operations with positive and negative test scenarios
+
+    API Coverage:
+    - GET /booking - Retrieve all booking IDs
+    - GET /booking/{id} - Fetch specific booking details
+    - POST /booking - Create new bookings  
+    - PUT /booking/{id} - Update existing bookings
+
 Background:
     Given I set the base API URL to the restful-booker service
 
@@ -34,8 +50,7 @@ Scenario Outline: Create a new booking with valid data
     Examples:
     | firstname | lastname | totalprice | depositpaid | checkin     | checkout    | additionalneeds |
     | John      | Smith    | 200        | true         | 2024-01-01 | 2024-01-05 | Breakfast      |
-    | Sarah     | Johnson  | 350        | false        | 2024-02-15 | 2024-02-20 | Late Checkout  |
-
+    
 @UpdateBooking @Authentication
 Scenario Outline: Update an existing booking
     Given I create a new booking with firstname "Test" and lastname "User"

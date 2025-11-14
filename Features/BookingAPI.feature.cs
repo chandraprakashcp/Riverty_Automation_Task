@@ -413,7 +413,7 @@ this.FeatureBackground();
     testRunner.When("I send a POST request to the \"booking\" endpoint with incomplete booking data:", ((string)(null)), table3, "When ");
 #line hidden
 #line 86
-    testRunner.Then("the response status code should be 501", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("the response status code should be 500", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

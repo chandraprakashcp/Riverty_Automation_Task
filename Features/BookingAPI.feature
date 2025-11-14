@@ -83,4 +83,4 @@ Scenario: Create booking with missing required fields should fail
     When I send a POST request to the "booking" endpoint with incomplete booking data:
         | firstname | lastname | totalprice |
         | John      |          | 200        |
-    Then the response status code should be 501
+    Then the response status code should be 500

@@ -29,7 +29,7 @@ namespace SpecFlowBookingAPI.Helpers
                 _extent = new AventStack.ExtentReports.ExtentReports();
                 _extent.AttachReporter(htmlReporter);
 
-                // Add system information
+                // System information
                 _extent.AddSystemInfo("Environment", "Test");
                 _extent.AddSystemInfo("OS", Environment.OSVersion.VersionString);
                 _extent.AddSystemInfo("Machine", Environment.MachineName);
@@ -37,11 +37,11 @@ namespace SpecFlowBookingAPI.Helpers
                 _extent.AddSystemInfo("Runtime", Environment.Version.ToString());
                 _extent.AddSystemInfo("Report Generated", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                Console.WriteLine($"📊 Extent Report Initialized: {_reportPath}");
+                Console.WriteLine($"Extent Report Initialized: {_reportPath}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Error initializing report: {ex.Message}");
+                Console.WriteLine($"Error initializing report: {ex.Message}");
             }
         }
 
@@ -49,8 +49,18 @@ namespace SpecFlowBookingAPI.Helpers
         {
             try
             {
-                _feature = _extent.CreateTest<AventStack.ExtentReports.Gherkin.Model.Feature>(featureContext.FeatureInfo.Title);
-                _scenario = _feature.CreateNode<AventStack.ExtentReports.Gherkin.Model.Scenario>(scenarioContext.ScenarioInfo.Title);
+                // Create feature once
+                if (_feature == null || _feature.Model.Name != featureContext.FeatureInfo.Title)
+                {
+                    _feature = _extent.CreateTest<AventStack.ExtentReports.Gherkin.Model.Feature>(
+                        featureContext.FeatureInfo.Title
+                    );
+                }
+
+                // Create scenario node for each scenario
+                _scenario = _feature.CreateNode<AventStack.ExtentReports.Gherkin.Model.Scenario>(
+                    scenarioContext.ScenarioInfo.Title
+                );
 
                 // Add tags as categories
                 foreach (var tag in scenarioContext.ScenarioInfo.Tags)
@@ -58,11 +68,11 @@ namespace SpecFlowBookingAPI.Helpers
                     _scenario.AssignCategory(tag);
                 }
 
-                Console.WriteLine($"🔹 Scenario Started: {scenarioContext.ScenarioInfo.Title}");
+                Console.WriteLine($"Scenario Started: {scenarioContext.ScenarioInfo.Title}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Error creating test in report: {ex.Message}");
+                Console.WriteLine($"Error creating test in report: {ex.Message}");
             }
         }
 
@@ -75,7 +85,7 @@ namespace SpecFlowBookingAPI.Helpers
 
                 if (scenarioContext.TestError == null)
                 {
-                    // Step passed
+                    // Passed step
                     switch (stepType.ToLower())
                     {
                         case "given":
@@ -91,12 +101,13 @@ namespace SpecFlowBookingAPI.Helpers
                             _scenario.CreateNode<AventStack.ExtentReports.Gherkin.Model.And>(stepName);
                             break;
                     }
-                    Console.WriteLine($"✅ {stepType}: {stepName}");
+
+                    Console.WriteLine($"{stepType}: {stepName}");
                 }
                 else
                 {
-                    // Step failed
-                    var errorMessage = $"❌ {stepType}: {stepName}";
+                    // Failed step with details
+                    var errorMessage = $"{stepType}: {stepName}";
                     errorMessage += $"\nError: {scenarioContext.TestError.Message}";
 
                     if (!string.IsNullOrEmpty(scenarioContext.TestError.StackTrace))
@@ -123,12 +134,13 @@ namespace SpecFlowBookingAPI.Helpers
                                 .Fail(errorMessage);
                             break;
                     }
-                    Console.WriteLine($"❌ {stepType}: {stepName} - FAILED");
+
+                    Console.WriteLine($"{stepType}: {stepName} - FAILED");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Error logging step: {ex.Message}");
+                Console.WriteLine($"Error logging step: {ex.Message}");
             }
         }
 
@@ -137,14 +149,13 @@ namespace SpecFlowBookingAPI.Helpers
             try
             {
                 _extent.Flush();
-                Console.WriteLine($"📄 HTML Report Generated Successfully: {_reportPath}");
+                Console.WriteLine($"HTML Report Generated Successfully: {_reportPath}");
 
-                // Open report in default browser (optional)
                 TryOpenReportInBrowser();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ Error flushing report: {ex.Message}");
+                Console.WriteLine($"Error flushing report: {ex.Message}");
             }
         }
 
@@ -159,12 +170,13 @@ namespace SpecFlowBookingAPI.Helpers
                         FileName = _reportPath,
                         UseShellExecute = true
                     });
-                    Console.WriteLine($"🌐 Opening report in browser...");
+
+                    Console.WriteLine("Opening report in browser...");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"⚠️ Could not open report in browser: {ex.Message}");
+                Console.WriteLine($"Unable to open report in browser: {ex.Message}");
             }
         }
 
